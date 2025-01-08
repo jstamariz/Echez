@@ -1,47 +1,62 @@
+using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
+using ProductService.Commands;
+using ProductService.CQRS;
+using ProductService.DataTransfer;
+using ProductService.Extensions;
+using ProductService.Models;
 using ProductService.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
 builder.Services.AddDbContext<ProductContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddQueries();
+builder.Services.AddCommands();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Map queries
+app.MapGet("/api/products", async (IQuery<IEnumerable<Product>> query) =>
 {
-    app.MapOpenApi();
-}
+    var products = await query.ExecuteAsync();
+    return Results.Ok(products);
+});
+
+app.MapGet("/api/products/{id}", async (IQuery<int, Product> query, int id) =>
+{
+    var product = await query.ExecuteAsync(id);
+    return product == null ? Results.NotFound() : Results.Ok(product);
+});
+
+app.MapGet("/api/products/search/{name}", async (IQuery<string, IEnumerable<Product>> query, string name) =>
+{
+    var products = await query.ExecuteAsync(name);
+    return Results.Ok(products);
+});
+
+// Map Commands
+app.MapPost("/api/products", async (ICommand<ProductDTO, Product> command, ProductDTO dto) =>
+{
+    var output = await command.ExecuteAsync(dto);
+    return Results.Created($"/api/products/{output.Result?.Id}", output.Result);
+});
+
+app.MapPut("/api/products/{id}", async (ICommand<ProductDTO, object?> command, int id, ProductDTO ProductDTO) =>
+{
+    if (id != ProductDTO.Id) return Results.BadRequest("Updated product id is not the same as product id parameter");
+
+    var result = await command.ExecuteAsync(ProductDTO);
+    return result.AffectedRows > 0 ? Results.NoContent() : Results.NotFound();
+});
+
+app.MapDelete("/api/products/{id}", async (ICommand<int, object?> command, int id) =>
+{
+    var result = await command.ExecuteAsync(id);
+    return result.AffectedRows > 0 ? Results.NoContent() : Results.NotFound();
+});
 
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
