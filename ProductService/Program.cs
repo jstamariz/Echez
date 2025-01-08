@@ -1,13 +1,15 @@
-using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
-using ProductService.Commands;
 using ProductService.CQRS;
 using ProductService.DataTransfer;
 using ProductService.Extensions;
+using ProductService.Middlewares;
 using ProductService.Models;
 using ProductService.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddDbContext<ProductContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -59,4 +61,3 @@ app.MapDelete("/api/products/{id}", async (ICommand<int, object?> command, int i
 
 app.UseHttpsRedirection();
 app.Run();
-
