@@ -61,3 +61,5 @@ app.MapDelete("/api/products/{id}", async (ICommand<int, object?> command, int i
 
 app.UseHttpsRedirection();
 app.Run();
+
+public partial class Program { }
