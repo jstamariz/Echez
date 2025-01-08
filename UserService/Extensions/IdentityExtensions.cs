@@ -17,6 +17,7 @@ namespace UserService.Extensions
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<UserContext>()
+                .AddApiEndpoints()
                 .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
