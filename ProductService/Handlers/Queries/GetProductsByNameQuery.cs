@@ -5,7 +5,7 @@ using ProductService.Models;
 using ProductService.Models.ValueObjects;
 using ProductService.Persistence;
 
-namespace ProductService.Queries;
+namespace ProductService.Handlers.Queries;
 
 public class GetProductsByNameQuery : IQuery<string, IEnumerable<Product>>
 {

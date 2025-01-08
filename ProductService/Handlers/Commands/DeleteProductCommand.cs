@@ -2,7 +2,7 @@ using System;
 using ProductService.CQRS;
 using ProductService.Persistence;
 
-namespace ProductService.Commands;
+namespace ProductService.Handlers.Commands;
 
 public class DeleteProductCommand : ICommand<int, object?>
 {

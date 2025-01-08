@@ -3,7 +3,7 @@ using ProductService.CQRS;
 using ProductService.Models;
 using ProductService.Persistence;
 
-namespace ProductService.Queries;
+namespace ProductService.Handlers.Queries;
 
 public class GetProductByIdQuery : IQuery<int, Product>
 {

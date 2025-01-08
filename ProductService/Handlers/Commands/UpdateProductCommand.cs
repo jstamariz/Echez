@@ -5,7 +5,7 @@ using ProductService.DataTransfer;
 using ProductService.Models.ValueObjects;
 using ProductService.Persistence;
 
-namespace ProductService.Commands;
+namespace ProductService.Handlers.Commands;
 
 public class UpdateProductCommand(ProductContext context) : ICommand<ProductDTO, object?>
 {

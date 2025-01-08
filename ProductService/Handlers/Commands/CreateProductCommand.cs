@@ -5,7 +5,7 @@ using ProductService.Models;
 using ProductService.Models.ValueObjects;
 using ProductService.Persistence;
 
-namespace ProductService.Commands;
+namespace ProductService.Handlers.Commands;
 
 public class CreateProductCommand(ProductContext context) : ICommand<ProductDTO, Product>
 {

@@ -1,6 +1,6 @@
 using System;
-using ProductService.Commands;
-using ProductService.Queries;
+using ProductService.Handlers.Commands;
+using ProductService.Handlers.Queries;
 using ProductService.CQRS;
 using ProductService.DataTransfer;
 using ProductService.Models;
