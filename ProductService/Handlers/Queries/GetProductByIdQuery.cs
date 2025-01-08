@@ -5,7 +5,7 @@ using ProductService.Persistence;
 
 namespace ProductService.Handlers.Queries;
 
-public class GetProductByIdQuery : IQuery<int, Product>
+public class GetProductByIdQuery : IQuery<int, Product?>
 {
     private readonly ProductContext _context;
 
@@ -14,8 +14,8 @@ public class GetProductByIdQuery : IQuery<int, Product>
         _context = context;
     }
 
-    public Task<Product> ExecuteAsync(int id)
+    public async Task<Product?> ExecuteAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Products.FindAsync(id);
     }
 }
