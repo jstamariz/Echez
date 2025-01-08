@@ -13,9 +13,7 @@ public abstract class CQRSTest : IDisposable
 
     public void Dispose()
     {
-        _productContext.ChangeTracker.Entries().ToList().ForEach(x => x.State = Microsoft.EntityFrameworkCore.EntityState.Detached);
+        _productContext.ChangeTracker.Clear();
         _productContext.Database.EnsureDeleted();
-
-        System.Console.WriteLine("Hello world");
     }
 }
