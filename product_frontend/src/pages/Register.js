@@ -9,7 +9,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.post('/api/users/register', { username, password });
+      await axiosInstance.post('/api/users/register', { email: username, password });
     } catch (error) {
       alert('Registration failed');
     }
@@ -21,7 +21,7 @@ function Register() {
         <h2>Register</h2>
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Email"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required

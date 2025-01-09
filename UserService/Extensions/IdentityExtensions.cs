@@ -29,6 +29,12 @@ namespace UserService.Extensions
                 options.Lockout.MaxFailedAccessAttempts = 5;
             });
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
+                options.DefaultChallengeScheme = IdentityConstants.BearerScheme;
+            }).AddBearerToken();
+            
             return services;
         }
     }

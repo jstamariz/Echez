@@ -480,3 +480,5 @@ $RECYCLE.BIN/
 **/*.db
 ProductService/ProductService.db-shm
 .gitignore
+UserService/UserService.db-shm
+UserService/UserService.db-wal
