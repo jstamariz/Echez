@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axiosInstance from '../api/axiosInstance';
+import { Link } from 'react-router-dom';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -33,6 +34,10 @@ function Register() {
           required
         />
         <button type="submit">Register</button>
+        <p>
+					Already have an account?{" "}
+					<Link to="/login">Login</Link>
+				</p>
       </form>
     </div>
   );
