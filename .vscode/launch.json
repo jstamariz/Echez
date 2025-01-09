@@ -1,0 +1,67 @@
+{
+	"version": "0.2.0",
+	"compounds": [
+		{
+			"name": "Run All Services",
+			"configurations": [
+				"Launch ApiGateway",
+				"Launch ProductService",
+				"Launch UserService"
+			]
+		}
+	],
+	"configurations": [
+		{
+			"name": "Launch ApiGateway",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/ApiGateway/bin/Debug/net9.0/ApiGateway.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}/ApiGateway",
+			"stopAtEntry": false,
+			"serverReadyAction": {
+				"action": "openExternally",
+				"pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+			},
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"sourceFileMap": {
+				"/Views": "${workspaceFolder}/ApiGateway/Views"
+			}
+		},
+		{
+			"name": "Launch ProductService",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/ProductService/bin/Debug/net9.0/ProductService.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}/ProductService",
+			"stopAtEntry": false,
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"sourceFileMap": {
+				"/Views": "${workspaceFolder}/ProductService/Views"
+			}
+		},
+		{
+			"name": "Launch UserService",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/UserService/bin/Debug/net9.0/UserService.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}/UserService",
+			"stopAtEntry": false,
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"sourceFileMap": {
+				"/Views": "${workspaceFolder}/UserService/Views"
+			}
+		}
+	]
+}
