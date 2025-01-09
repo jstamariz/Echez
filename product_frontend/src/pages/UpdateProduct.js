@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import ProductForm from "../components/ProductForm";
+import axiosInstance from "../api/axiosInstance";
 
 function UpdateProduct() {
 	const { id } = useParams();
@@ -12,7 +12,7 @@ function UpdateProduct() {
 	const [image, setImage] = useState("");
 
 	useEffect(() => {
-		axios.get(`/api/products/${id}`).then((response) => {
+		axiosInstance.get(`/api/products/${id}`).then((response) => {
 			const product = response.data;
 			setName(product.name.value);
 			setPrice(product.price.value);
@@ -24,7 +24,7 @@ function UpdateProduct() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			await axios.put(`/api/products/${id}`, {
+			await axiosInstance.put(`/api/products/${id}`, {
 				id: parseInt(id),
 				name,
 				price: parseFloat(price),
