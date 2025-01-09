@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 import axiosInstance from "../api/axiosInstance";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		try {
-			const response = await axiosInstance.post("/api/users/login", {
-				username,
-				password,
-			});
-			localStorage.setItem("token", response.data.token);
-			alert("Login successful");
-		} catch (error) {
-			alert("Login failed");
+		const response = await axiosInstance.post("/api/users/login", {
+			email: username,
+			password,
+		});
+
+		if (response.status > 400) {
+			alert("login failed");
+			return;
 		}
+
+		localStorage.setItem("token", response.data.accessToken);
+		localStorage.setItem("refresh", response.data.refreshToken);
+		navigate("/");
 	};
 
 	return (
@@ -40,8 +44,7 @@ function Login() {
 				/>
 				<button type="submit">Login</button>
 				<p>
-					Maybe you need an account{" "}
-					<Link to="/register">Register</Link>
+					Maybe you need an account <Link to="/register">Register</Link>
 				</p>
 			</form>
 		</div>

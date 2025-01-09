@@ -5,11 +5,6 @@ using UserService.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.UseKestrel(options =>
-{
-    options.ListenLocalhost(5002); // Internal access only
-});
-
 builder.Services.AddCustomIdentity(builder.Configuration);
 
 builder.Services.AddControllers();
@@ -32,10 +27,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapGroup("api/users").MapIdentityApi<IdentityUser>();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapIdentityApi<IdentityUser>();
 
 app.Run();

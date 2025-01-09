@@ -8,11 +8,6 @@ using ProductService.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.UseKestrel(options =>
-{
-    options.ListenLocalhost(5001); // Internal access only
-});
-
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 

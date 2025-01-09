@@ -12,13 +12,15 @@ namespace UserService.Extensions
     {
         public static IServiceCollection AddCustomIdentity(this IServiceCollection services, ConfigurationManager configuration)
         {
+
+            services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+            services.AddAuthorizationBuilder();
             services.AddDbContext<UserContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentityCore<IdentityUser>()
                 .AddEntityFrameworkStores<UserContext>()
-                .AddApiEndpoints()
-                .AddDefaultTokenProviders();
+                .AddApiEndpoints();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -28,12 +30,6 @@ namespace UserService.Extensions
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
             });
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
-                options.DefaultChallengeScheme = IdentityConstants.BearerScheme;
-            }).AddBearerToken();
             
             return services;
         }
